@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Piña Loca - Tienda</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <div>
+      <h1>Piña Loca</h1>
+      <p>Productos frescos, ofertas locas y administración fácil.</p>
+    </div>
+    <div class="session-actions">
+      <span id="sessionStatus">Inicia sesión para comenzar</span>
+      <button id="logoutBtn" class="secondary-btn hidden">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="panel auth-view active" id="authView">
+      <div class="section-header">
+        <h2>Iniciar sesión</h2>
+        <p>Ingresa con tu cuenta de usuario o como administrador.</p>
+      </div>
+      <div class="auth-cards">
+        <div class="auth-card">
+          <h3>Usuario</h3>
+          <form id="userLoginForm" autocomplete="off">
+            <div class="form-row">
+              <label>Correo electrónico</label>
+              <input type="email" id="userEmail" placeholder="usuario@ejemplo.com" autocomplete="off" required />
+            </div>
+            <div class="form-row">
+              <label>Contraseña</label>
+              <input type="password" id="userPassword" placeholder="Contraseña" autocomplete="off" required />
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="primary-btn">Ingresar</button>
+              <button type="button" id="createAccountBtn" class="secondary-btn">Crear cuenta</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="auth-card">
+          <h3>Administrador</h3>
+          <form id="adminLoginForm" autocomplete="off">
+            <label>Contraseña</label>
+            <input type="password" id="adminPassword" placeholder="Contraseña de administrador" autocomplete="off" required />
+            <div class="form-actions">
+              <button type="submit" class="primary-btn">Ingresar Admin</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div id="authMessage" class="auth-message"></div>
+    </section>
+
+    <section class="panel user-view" id="userView">
+      <div class="section-header">
+        <h2>Área del cliente</h2>
+        <div class="cart-summary">
+          <span id="cartCount">0</span> artículos en el carrito
+        </div>
+      </div>
+
+      <div class="promotions">
+        <h3>Productos con promoción</h3>
+        <div class="promotion-cards" id="promoCards"></div>
+      </div>
+
+      <div class="products">
+        <h3>Productos sin promoción</h3>
+        <div class="product-grid" id="productGrid"></div>
+      </div>
+
+      <div class="cart-panel">
+        <h3>Carrito</h3>
+        <ul id="cartList"></ul>
+        <div class="cart-total">
+          Total: <span id="cartTotal">Q0.00</span>
+        </div>
+        <button id="checkoutBtn" class="secondary-btn" disabled>Comprar</button>
+      </div>
+
+      <div class="invoice-panel">
+        <h3>Mis facturas</h3>
+        <div id="userInvoices" class="invoice-list"></div>
+      </div>
+
+      <div class="invoice-details" id="invoiceDetails">
+        <h3>Detalle de factura</h3>
+        <div id="invoiceDetailContent" class="invoice-detail-content">
+          <p class="info-text">Selecciona una factura para ver aquí todos los datos del comprobante y descargarla en PDF.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel admin-view" id="adminView">
+      <div class="section-header">
+        <h2>Área del administrador</h2>
+        <p>Modifica, agrega o elimina productos.</p>
+      </div>
+
+      <div class="admin-actions">
+        <div class="admin-form">
+          <h3>Agregar o editar producto</h3>
+          <form id="productForm">
+            <input type="hidden" id="productId" />
+            <label>Nombre</label>
+            <input type="text" id="productName" placeholder="Ej. Piña fresca" required />
+            <label>Precio</label>
+            <input type="number" id="productPrice" placeholder="Ej. 12.50" min="0" step="0.01" required />
+            <label>Descripción</label>
+            <textarea id="productDescription" placeholder="Sabor tropical..." rows="3"></textarea>
+            <label>Promoción</label>
+            <input type="text" id="productPromo" placeholder="Ej. 2x1, descuento 20%" />
+            <label>Imagen URL</label>
+            <input type="text" id="productImageUrl" placeholder="https://..." />
+            <label>O subir archivo de imagen</label>
+            <input type="file" id="productImage" accept="image/*" />
+            <div id="imagePreview" class="image-preview"></div>
+            <div class="form-actions">
+              <button type="submit" class="primary-btn">Guardar producto</button>
+              <button type="button" id="cancelEditBtn" class="secondary-btn">Cancelar</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="admin-list">
+          <h3>Productos existentes</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Promoción</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="adminTableBody"></tbody>
+          </table>
+        </div>
+
+        <div class="invoice-registry">
+          <h3>Registro de facturas</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Factura</th>
+                <th>Usuario</th>
+                <th>Fecha</th>
+                <th>Total</th>
+                <th>Imágenes</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="adminInvoiceTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Piña Loca &copy; 2026 - Comercio con sabor tropical</p>
+  </footer>
+
+  <div id="toastMessage" class="toast-message"></div>
+  <script src="script.js?v=2"></script>
+</body>
+</html>
